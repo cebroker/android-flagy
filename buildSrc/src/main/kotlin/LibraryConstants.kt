@@ -12,7 +12,7 @@ object LibraryConstants {
     const val LICENSE_URL = "https://opensource.org/licenses/mit-license.php"
     const val LICENSE_DIST = "repo"
 
-    const val DEVELOPER = "com.flagly.oscarg798"
+    const val DEVELOPER = "com.evercheck.flagly.oscarg798"
     const val DEVELOPER_NAME = "Oscar Gallon"
 }
 

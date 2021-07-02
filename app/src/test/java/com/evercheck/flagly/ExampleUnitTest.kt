@@ -1,4 +1,4 @@
-package com.flagly
+package com.evercheck.flagly
 
 import org.junit.Test
 
