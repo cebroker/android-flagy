@@ -7,6 +7,7 @@ plugins {
     id("kotlin-android-extensions")
     id("kotlin-kapt")
     id("com.jfrog.bintray")
+    id("com.github.dcendents.android-maven")
 }
 
 apply {
