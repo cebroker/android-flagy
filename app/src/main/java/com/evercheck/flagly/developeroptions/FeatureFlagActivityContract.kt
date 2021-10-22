@@ -7,6 +7,7 @@ interface FeatureFlagActivityContract {
     interface View {
 
         fun setup()
+
         fun showReatureFlagValues(featureFlagValues: List<FeatureFlagValue>)
     }
 
@@ -15,7 +16,9 @@ interface FeatureFlagActivityContract {
         var view: View?
 
         fun bind(view: View)
+
         fun onViewReady()
+
         fun unBind()
     }
 }

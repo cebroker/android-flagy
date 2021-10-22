@@ -7,5 +7,5 @@ interface FeatureFlagValueChangedListener {
 
     fun onFeatureFlagValueChanged(featureFlag: FeatureFlag, value: Boolean)
 
-    fun onOverrideValueChange(featureFlag: FeatureFlag, override: Boolean)
+    fun onOverrideValueChange(featureFlag: FeatureFlag, override: Boolean, remoteValue: Boolean)
 }
