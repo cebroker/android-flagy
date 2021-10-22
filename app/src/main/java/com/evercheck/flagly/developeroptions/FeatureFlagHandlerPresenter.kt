@@ -51,9 +51,9 @@ class FeatureFlagHandlerPresenter @Inject constructor(
         localFeatureflagHandler.setValue(featureFlag, value)
     }
 
-    override fun onOverrideValueChange(featureFlag: FeatureFlag, override: Boolean, remoteValue: Boolean) {
+    override fun onOverrideValueChange(featureFlag: FeatureFlag, override: Boolean) {
         if (override) {
-            localFeatureflagHandler.setValue(featureFlag, remoteValue)
+            localFeatureflagHandler.setValue(featureFlag, false)
         } else {
             localFeatureflagHandler.removeOverridenValue(featureFlag)
         }

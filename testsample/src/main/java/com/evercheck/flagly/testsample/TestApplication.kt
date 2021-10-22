@@ -31,20 +31,7 @@ class TestApplication : Application(), FeatureHandleResourceProvider {
     override fun getFeatureFlagProvider(): FeatureFlagProvider = object : FeatureFlagProvider {
 
         override fun provideAppSupportedFeatureflags(): Collection<FeatureFlag> {
-            return setOf(
-                FeatureFlagOne,
-                FeatureFlagTwo,
-                FeatureFlagThree,
-                FeatureFlagFour,
-                FeatureFlag5,
-                FeatureFlag6,
-                FeatureFlag7,
-                FeatureFlag8,
-                FeatureFlag9,
-                FeatureFlag10,
-                FeatureFlag11,
-                FeatureFlag12
-            )
+            return setOf(FeatureFlagOne, FeatureFlagTwo, FeatureFlagThree, FeatureFlagFour)
         }
     }
 

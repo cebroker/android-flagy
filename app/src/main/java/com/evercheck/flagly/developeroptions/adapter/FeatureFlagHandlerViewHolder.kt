@@ -9,7 +9,7 @@ import com.evercheck.flagly.developeroptions.FeatureFlagValue
 class FeatureFlagHandlerViewHolder(private val binding: ItemFeatureFlagBinding) :
     RecyclerView.ViewHolder(binding.root), LayoutContainer {
 
-    override val containerView: View = binding.root
+    override val containerView: View? = binding.root
 
     fun bind(
         featureFlagValue: FeatureFlagValue,
@@ -20,7 +20,7 @@ class FeatureFlagHandlerViewHolder(private val binding: ItemFeatureFlagBinding) 
             cbOverride.setOnCheckedChangeListener(null)
             cbOverride.isChecked = featureFlagValue.isOverride
             switchFeatureFlag.isEnabled = featureFlagValue.isOverride
-            switchFeatureFlag.isChecked = if (featureFlagValue.isOverride) featureFlagValue.currentValue else featureFlagValue.remoteValue
+            switchFeatureFlag.isChecked = featureFlagValue.currentValue
             tvFeatureFlagName.text = featureFlagValue.featureFlag.name
             tvFeatureRemoteValue.text = featureFlagValue.remoteValue.toString()
 
@@ -42,8 +42,7 @@ class FeatureFlagHandlerViewHolder(private val binding: ItemFeatureFlagBinding) 
         cbOverride.setOnCheckedChangeListener { _, isChecked ->
             featureFlagValueChangedListenerListener.onOverrideValueChange(
                 featureFlagValue.featureFlag,
-                isChecked,
-                featureFlagValue.remoteValue
+                isChecked
             )
         }
     }
