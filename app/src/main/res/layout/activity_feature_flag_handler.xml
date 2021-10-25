@@ -4,13 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="@dimen/spacing_medium">
-
+    android:focusable="true"
+    android:focusableInTouchMode="true">
 
     <TextView
         android:id="@+id/tvTitle"
         android:layout_width="@dimen/match_constraint"
         android:layout_height="wrap_content"
+        android:layout_margin="@dimen/spacing_medium"
         android:fontFamily="@font/roboto_medium"
         android:gravity="center"
         android:text="Supported Feature Flags"
@@ -19,16 +20,29 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <SearchView
+        android:id="@+id/svFeatureFlag"
+        android:layout_width="@dimen/match_constraint"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/spacing_medium"
+        android:iconifiedByDefault="false"
+        android:queryHint="Search a feature flag..."
+        app:layout_constraintEnd_toEndOf="@id/tvTitle"
+        app:layout_constraintStart_toStartOf="@id/tvTitle"
+        app:layout_constraintTop_toBottomOf="@id/tvTitle" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvFlags"
         android:layout_width="@dimen/match_constraint"
         android:layout_height="@dimen/match_constraint"
-        tools:itemCount="10"
         android:layout_marginTop="@dimen/spacing_medium"
+        android:clipToPadding="false"
+        android:padding="@dimen/spacing_medium"
+        android:scrollbars="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvTitle"
+        app:layout_constraintTop_toBottomOf="@+id/svFeatureFlag"
+        tools:itemCount="10"
         tools:listitem="@layout/item_feature_flag" />
-
 </androidx.constraintlayout.widget.ConstraintLayout>
