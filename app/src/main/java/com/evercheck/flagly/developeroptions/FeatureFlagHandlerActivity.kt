@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.evercheck.flagly.databinding.ActivityFeatureFlagHandlerBinding
 import com.evercheck.flagly.developeroptions.adapter.FeatureFlagAdapter
 import com.evercheck.flagly.di.DaggerFeatureHandlerComponent
+import com.evercheck.flagly.utils.EMPTY_STRING
 import javax.inject.Inject
 
 class FeatureFlagHandlerActivity : AppCompatActivity(), FeatureFlagActivityContract.View {
@@ -28,7 +29,7 @@ class FeatureFlagHandlerActivity : AppCompatActivity(), FeatureFlagActivityContr
 
         presenter.bind(this)
         presenter.onViewReady()
-        presenter.onLoadFeatureFlagValues()
+        presenter.filterFeautreFlagsByName()
 
         binding.setUpSearchView()
     }
@@ -49,7 +50,7 @@ class FeatureFlagHandlerActivity : AppCompatActivity(), FeatureFlagActivityContr
             override fun onQueryTextSubmit(query: String?)  = false
 
             override fun onQueryTextChange(newText: String?): Boolean {
-                presenter.onLoadFeatureFlagValues(newText ?: "")
+                presenter.filterFeautreFlagsByName(newText ?: EMPTY_STRING)
                 return false
             }
         })

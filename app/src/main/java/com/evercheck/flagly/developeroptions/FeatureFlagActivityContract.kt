@@ -1,8 +1,7 @@
 package com.evercheck.flagly.developeroptions
 
 import com.evercheck.flagly.developeroptions.adapter.FeatureFlagValueChangedListener
-
-private const val EMPTY = ""
+import com.evercheck.flagly.utils.EMPTY_STRING
 
 interface FeatureFlagActivityContract {
 
@@ -19,7 +18,7 @@ interface FeatureFlagActivityContract {
 
         fun bind(view: View)
 
-        fun onLoadFeatureFlagValues(search: String = EMPTY)
+        fun filterFeautreFlagsByName(search: String = EMPTY_STRING)
 
         fun onViewReady()
 

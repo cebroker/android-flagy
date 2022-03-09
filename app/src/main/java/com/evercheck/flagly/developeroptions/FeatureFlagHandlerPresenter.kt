@@ -33,27 +33,19 @@ class FeatureFlagHandlerPresenter @Inject constructor(
         view?.setup()
     }
 
-    override fun onLoadFeatureFlagValues(search: String) {
+    override fun filterFeautreFlagsByName(search: String) {
         this.search = search
         this.setupFeatureFlagValues()
     }
 
     private fun setupFeatureFlagValues() {
-        launch {
-            val values =
-                withContext(coroutineContextProvider.backgroundDispatcher) {
-                    featureFlagProvider.provideAppSupportedFeatureflags()
-                        .filter {
-                            search.isEmpty() ||
-                                    it.name.toLowerCase(Locale.ROOT).contains(search)
-                        }
-                        .map { featureFlag ->
-                            getFeatureFlagValue(featureFlag)
-                        }
-                }
+        val values = featureFlagProvider.provideAppSupportedFeatureflags()
+            .filter { it.name.toLowerCase(Locale.ROOT).contains(search) }
+            .map { featureFlag ->
+                getFeatureFlagValue(featureFlag)
+            }
 
-            view?.showReatureFlagValues(values)
-        }
+        view?.showReatureFlagValues(values)
     }
 
     override fun unBind() {
