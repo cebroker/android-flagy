@@ -6,7 +6,7 @@ import com.evercheck.flagly.featureflag.FeatureFlagProvider
 
 interface FeatureHandleResourceProvider {
 
-    fun  getFeatureFlagProvider() :  FeatureFlagProvider
-    fun  getRemoteFeatureFlagHandler(): FeatureFlagHandler
-    fun  getLocalFeatureflagHandler(): DynamicFeatureFlagHandler
+    fun getFeatureFlagProvider(): FeatureFlagProvider
+    fun getRemoteFeatureFlagHandler(): FeatureFlagHandler
+    fun getLocalFeatureflagHandler(): DynamicFeatureFlagHandler
 }

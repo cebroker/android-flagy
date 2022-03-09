@@ -1,57 +1,39 @@
 package com.evercheck.flagly.developeroptions
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import com.evercheck.flagly.developeroptions.adapter.FeatureFlagValueChangedListener
 import com.evercheck.flagly.featureflag.DynamicFeatureFlagHandler
 import com.evercheck.flagly.featureflag.FeatureFlag
 import com.evercheck.flagly.featureflag.FeatureFlagHandler
 import com.evercheck.flagly.featureflag.FeatureFlagProvider
-import com.evercheck.flagly.utils.CoroutineContextProvider
+import com.evercheck.flagly.utils.EMPTY
 import java.util.Locale
 import javax.inject.Inject
-import kotlin.coroutines.CoroutineContext
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.SupervisorJob
 
-class FeatureFlagHandlerPresenter @Inject constructor(
+class FeatureFlagHandlerViewModel @Inject constructor(
     private val featureFlagProvider: FeatureFlagProvider,
     private val remoteFeatureFlagHandler: FeatureFlagHandler,
     private val localFeatureflagHandler: DynamicFeatureFlagHandler,
-    private val coroutineContextProvider: CoroutineContextProvider
-) : FeatureFlagActivityContract.Presenter, CoroutineScope {
+) : ViewModel(), FeatureFlagValueChangedListener {
 
-    private val job: Job = SupervisorJob()
+    private val _featureFlagValues = MutableLiveData<List<FeatureFlagValue>>()
+    val featureFlagValues: LiveData<List<FeatureFlagValue>> get() = _featureFlagValues
+
     private lateinit var query: String
 
-    override var view: FeatureFlagActivityContract.View? = null
-
-    override val coroutineContext: CoroutineContext
-        get() = coroutineContextProvider.mainDispatcher + job
-
-    override fun bind(view: FeatureFlagActivityContract.View) {
-        this.view = view
-    }
-
-    override fun onViewReady() {
-        view?.setup()
-    }
-
-    override fun filterFeatureFlagsByName(query: String) {
+    fun filterFeatureFlagsByName(query: String = EMPTY) {
         this.query = query
         this.setupFeatureFlagValues()
     }
 
     private fun setupFeatureFlagValues() {
-        val values = featureFlagProvider.provideAppSupportedFeatureflags()
+        _featureFlagValues.postValue(featureFlagProvider.provideAppSupportedFeatureflags()
             .filter { it.name.toLowerCase(Locale.ROOT).contains(query) }
             .map { featureFlag ->
                 getFeatureFlagValue(featureFlag)
-            }
-
-        view?.showReatureFlagValues(values)
-    }
-
-    override fun unBind() {
-        view = null
+            })
     }
 
     override fun onFeatureFlagValueChanged(featureFlag: FeatureFlag, value: Boolean) {
@@ -87,5 +69,4 @@ class FeatureFlagHandlerPresenter @Inject constructor(
         } else {
             false
         }
-
 }
