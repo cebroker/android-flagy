@@ -1,6 +1,5 @@
 package com.evercheck.flagly.developeroptions
 
-import kotlinx.coroutines.*
 import com.evercheck.flagly.featureflag.DynamicFeatureFlagHandler
 import com.evercheck.flagly.featureflag.FeatureFlag
 import com.evercheck.flagly.featureflag.FeatureFlagHandler
@@ -9,6 +8,9 @@ import com.evercheck.flagly.utils.CoroutineContextProvider
 import java.util.Locale
 import javax.inject.Inject
 import kotlin.coroutines.CoroutineContext
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.SupervisorJob
 
 class FeatureFlagHandlerPresenter @Inject constructor(
     private val featureFlagProvider: FeatureFlagProvider,
@@ -18,7 +20,7 @@ class FeatureFlagHandlerPresenter @Inject constructor(
 ) : FeatureFlagActivityContract.Presenter, CoroutineScope {
 
     private val job: Job = SupervisorJob()
-    private var search: String = ""
+    private lateinit var query: String
 
     override var view: FeatureFlagActivityContract.View? = null
 
@@ -33,14 +35,14 @@ class FeatureFlagHandlerPresenter @Inject constructor(
         view?.setup()
     }
 
-    override fun filterFeautreFlagsByName(search: String) {
-        this.search = search
+    override fun filterFeautreFlagsByName(query: String) {
+        this.query = query
         this.setupFeatureFlagValues()
     }
 
     private fun setupFeatureFlagValues() {
         val values = featureFlagProvider.provideAppSupportedFeatureflags()
-            .filter { it.name.toLowerCase(Locale.ROOT).contains(search) }
+            .filter { it.name.toLowerCase(Locale.ROOT).contains(query) }
             .map { featureFlag ->
                 getFeatureFlagValue(featureFlag)
             }
