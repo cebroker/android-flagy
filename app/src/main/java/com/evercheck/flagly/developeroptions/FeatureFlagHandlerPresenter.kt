@@ -6,7 +6,7 @@ import com.evercheck.flagly.featureflag.FeatureFlag
 import com.evercheck.flagly.featureflag.FeatureFlagHandler
 import com.evercheck.flagly.featureflag.FeatureFlagProvider
 import com.evercheck.flagly.utils.CoroutineContextProvider
-import java.util.*
+import java.util.Locale
 import javax.inject.Inject
 import kotlin.coroutines.CoroutineContext
 
@@ -43,8 +43,10 @@ class FeatureFlagHandlerPresenter @Inject constructor(
             val values =
                 withContext(coroutineContextProvider.backgroundDispatcher) {
                     featureFlagProvider.provideAppSupportedFeatureflags()
-                        .filter { search.isEmpty() ||
-                                it.name.toLowerCase(Locale.ROOT).contains(search) }
+                        .filter {
+                            search.isEmpty() ||
+                                    it.name.toLowerCase(Locale.ROOT).contains(search)
+                        }
                         .map { featureFlag ->
                             getFeatureFlagValue(featureFlag)
                         }
