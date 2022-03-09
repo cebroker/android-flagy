@@ -29,7 +29,7 @@ class FeatureFlagHandlerActivity : AppCompatActivity(), FeatureFlagActivityContr
 
         presenter.bind(this)
         presenter.onViewReady()
-        presenter.filterFeautreFlagsByName()
+        presenter.filterFeatureFlagsByName()
 
         binding.setUpSearchView()
     }
@@ -50,7 +50,7 @@ class FeatureFlagHandlerActivity : AppCompatActivity(), FeatureFlagActivityContr
             override fun onQueryTextSubmit(query: String?) = false
 
             override fun onQueryTextChange(newText: String?): Boolean {
-                presenter.filterFeautreFlagsByName(newText ?: EMPTY)
+                presenter.filterFeatureFlagsByName(newText ?: EMPTY)
                 return false
             }
         })

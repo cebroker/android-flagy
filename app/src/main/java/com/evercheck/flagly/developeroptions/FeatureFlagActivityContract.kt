@@ -18,7 +18,7 @@ interface FeatureFlagActivityContract {
 
         fun bind(view: View)
 
-        fun filterFeautreFlagsByName(query: String = EMPTY)
+        fun filterFeatureFlagsByName(query: String = EMPTY)
 
         fun onViewReady()
 

@@ -35,7 +35,7 @@ class FeatureFlagHandlerPresenter @Inject constructor(
         view?.setup()
     }
 
-    override fun filterFeautreFlagsByName(query: String) {
+    override fun filterFeatureFlagsByName(query: String) {
         this.query = query
         this.setupFeatureFlagValues()
     }
