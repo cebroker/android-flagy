@@ -17,6 +17,8 @@ interface FeatureFlagActivityContract {
 
         fun bind(view: View)
 
+        fun onLoadFeatureFlagValues(search: String = "")
+
         fun onViewReady()
 
         fun unBind()

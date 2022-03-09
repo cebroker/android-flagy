@@ -28,6 +28,7 @@ class FeatureFlagHandlerActivity : AppCompatActivity(), FeatureFlagActivityContr
 
         presenter.bind(this)
         presenter.onViewReady()
+        presenter.onLoadFeatureFlagValues()
 
         binding.setUpSearchView()
     }
@@ -48,7 +49,7 @@ class FeatureFlagHandlerActivity : AppCompatActivity(), FeatureFlagActivityContr
             override fun onQueryTextSubmit(query: String?)  = false
 
             override fun onQueryTextChange(newText: String?): Boolean {
-                getFeatureFlagAdapter().filter.filter(newText)
+                presenter.onLoadFeatureFlagValues(newText ?: "")
                 return false
             }
         })
@@ -85,7 +86,6 @@ class FeatureFlagHandlerActivity : AppCompatActivity(), FeatureFlagActivityContr
     override fun showReatureFlagValues(featureFlagValues: List<FeatureFlagValue>) {
         binding.getFeatureFlagAdapter()
             .submitList(featureFlagValues, shouldSaveListToBeFiltered = true)
-        binding.svFeatureFlag.setQuery(null, false)
     }
 
     private fun ActivityFeatureFlagHandlerBinding.getFeatureFlagAdapter(): FeatureFlagAdapter {

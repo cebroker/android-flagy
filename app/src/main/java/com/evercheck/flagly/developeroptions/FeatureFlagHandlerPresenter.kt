@@ -6,6 +6,7 @@ import com.evercheck.flagly.featureflag.FeatureFlag
 import com.evercheck.flagly.featureflag.FeatureFlagHandler
 import com.evercheck.flagly.featureflag.FeatureFlagProvider
 import com.evercheck.flagly.utils.CoroutineContextProvider
+import java.util.*
 import javax.inject.Inject
 import kotlin.coroutines.CoroutineContext
 
@@ -17,6 +18,8 @@ class FeatureFlagHandlerPresenter @Inject constructor(
 ) : FeatureFlagActivityContract.Presenter, CoroutineScope {
 
     private val job: Job = SupervisorJob()
+    private var search: String = ""
+
     override var view: FeatureFlagActivityContract.View? = null
 
     override val coroutineContext: CoroutineContext
@@ -28,16 +31,24 @@ class FeatureFlagHandlerPresenter @Inject constructor(
 
     override fun onViewReady() {
         view?.setup()
-        setupFeatureFlagValues()
+    }
+
+    override fun onLoadFeatureFlagValues(search: String) {
+        this.search = search
+        this.setupFeatureFlagValues()
     }
 
     private fun setupFeatureFlagValues() {
         launch {
-            val values = withContext(coroutineContextProvider.backgroundDispatcher) {
-                featureFlagProvider.provideAppSupportedFeatureflags().map { featureFlag ->
-                    getFeatureFlagValue(featureFlag)
+            val values =
+                withContext(coroutineContextProvider.backgroundDispatcher) {
+                    featureFlagProvider.provideAppSupportedFeatureflags()
+                        .filter { search.isEmpty() ||
+                                it.name.toLowerCase(Locale.ROOT).contains(search) }
+                        .map { featureFlag ->
+                            getFeatureFlagValue(featureFlag)
+                        }
                 }
-            }
 
             view?.showReatureFlagValues(values)
         }
@@ -51,7 +62,11 @@ class FeatureFlagHandlerPresenter @Inject constructor(
         localFeatureflagHandler.setValue(featureFlag, value)
     }
 
-    override fun onOverrideValueChange(featureFlag: FeatureFlag, override: Boolean, remoteValue: Boolean) {
+    override fun onOverrideValueChange(
+        featureFlag: FeatureFlag,
+        override: Boolean,
+        remoteValue: Boolean
+    ) {
         if (override) {
             localFeatureflagHandler.setValue(featureFlag, remoteValue)
         } else {
