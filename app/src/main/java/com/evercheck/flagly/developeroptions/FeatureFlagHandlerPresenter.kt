@@ -1,13 +1,16 @@
 package com.evercheck.flagly.developeroptions
 
-import kotlinx.coroutines.*
 import com.evercheck.flagly.featureflag.DynamicFeatureFlagHandler
 import com.evercheck.flagly.featureflag.FeatureFlag
 import com.evercheck.flagly.featureflag.FeatureFlagHandler
 import com.evercheck.flagly.featureflag.FeatureFlagProvider
 import com.evercheck.flagly.utils.CoroutineContextProvider
+import java.util.Locale
 import javax.inject.Inject
 import kotlin.coroutines.CoroutineContext
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.SupervisorJob
 
 class FeatureFlagHandlerPresenter @Inject constructor(
     private val featureFlagProvider: FeatureFlagProvider,
@@ -17,6 +20,8 @@ class FeatureFlagHandlerPresenter @Inject constructor(
 ) : FeatureFlagActivityContract.Presenter, CoroutineScope {
 
     private val job: Job = SupervisorJob()
+    private lateinit var query: String
+
     override var view: FeatureFlagActivityContract.View? = null
 
     override val coroutineContext: CoroutineContext
@@ -28,19 +33,21 @@ class FeatureFlagHandlerPresenter @Inject constructor(
 
     override fun onViewReady() {
         view?.setup()
-        setupFeatureFlagValues()
+    }
+
+    override fun filterFeatureFlagsByName(query: String) {
+        this.query = query
+        this.setupFeatureFlagValues()
     }
 
     private fun setupFeatureFlagValues() {
-        launch {
-            val values = withContext(coroutineContextProvider.backgroundDispatcher) {
-                featureFlagProvider.provideAppSupportedFeatureflags().map { featureFlag ->
-                    getFeatureFlagValue(featureFlag)
-                }
+        val values = featureFlagProvider.provideAppSupportedFeatureflags()
+            .filter { it.name.toLowerCase(Locale.ROOT).contains(query) }
+            .map { featureFlag ->
+                getFeatureFlagValue(featureFlag)
             }
 
-            view?.showReatureFlagValues(values)
-        }
+        view?.showReatureFlagValues(values)
     }
 
     override fun unBind() {
@@ -51,7 +58,11 @@ class FeatureFlagHandlerPresenter @Inject constructor(
         localFeatureflagHandler.setValue(featureFlag, value)
     }
 
-    override fun onOverrideValueChange(featureFlag: FeatureFlag, override: Boolean, remoteValue: Boolean) {
+    override fun onOverrideValueChange(
+        featureFlag: FeatureFlag,
+        override: Boolean,
+        remoteValue: Boolean
+    ) {
         if (override) {
             localFeatureflagHandler.setValue(featureFlag, remoteValue)
         } else {

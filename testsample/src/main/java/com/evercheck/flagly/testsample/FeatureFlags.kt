@@ -22,3 +22,8 @@ object FeatureFlagFour : FeatureFlag{
     override val name: String
         get() = "four"
 }
+
+object FeatureFlagFive : FeatureFlag{
+    override val name: String
+        get() = "five"
+}

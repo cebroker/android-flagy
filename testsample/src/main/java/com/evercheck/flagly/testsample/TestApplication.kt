@@ -22,7 +22,7 @@ class TestApplication : Application(), FeatureHandleResourceProvider {
 
         override fun isValueOverriden(featureFlag: FeatureFlag): Boolean =
             featureflagMap.containsKey(featureFlag.name)
-        
+
         override fun removeOverridenValue(featureFlag: FeatureFlag) {
             featureflagMap.remove(featureFlag.name)
         }
@@ -31,13 +31,19 @@ class TestApplication : Application(), FeatureHandleResourceProvider {
     override fun getFeatureFlagProvider(): FeatureFlagProvider = object : FeatureFlagProvider {
 
         override fun provideAppSupportedFeatureflags(): Collection<FeatureFlag> {
-            return setOf(FeatureFlagOne, FeatureFlagTwo, FeatureFlagThree, FeatureFlagFour)
+            return setOf(
+                FeatureFlagOne,
+                FeatureFlagTwo,
+                FeatureFlagThree,
+                FeatureFlagFour,
+                FeatureFlagFive
+            )
         }
     }
 
     override fun getRemoteFeatureFlagHandler(): FeatureFlagHandler = object : FeatureFlagHandler {
         override fun isFeatureEnabled(featureFlag: FeatureFlag): Boolean {
-            return featureFlag is FeatureFlagOne || featureFlag is FeatureFlagThree
+            return featureFlag is FeatureFlagOne || featureFlag is FeatureFlagThree || featureFlag is FeatureFlagFive
         }
     }
 

@@ -21,7 +21,7 @@ class FeatureFlagAdapter(
 
     override fun areContentsTheSame(oldItem: FeatureFlagValue, newItem: FeatureFlagValue): Boolean =
         newItem == oldItem
-}), Filterable {
+}) {
 
     private var originalList = ArrayList<FeatureFlagValue>()
     private var temporalList = ArrayList<FeatureFlagValue>()
@@ -44,36 +44,5 @@ class FeatureFlagAdapter(
             originalList = list as ArrayList<FeatureFlagValue>
         }
         super.submitList(list)
-    }
-
-    override fun getFilter(): Filter {
-        return object : Filter() {
-            override fun performFiltering(constraint: CharSequence?): FilterResults {
-                val charSearch = constraint.toString()
-
-                temporalList = if (charSearch.isEmpty()) {
-                    originalList
-                } else {
-                    val resultList = ArrayList<FeatureFlagValue>()
-                    for (row in originalList) {
-                        if (row.featureFlag.name.toLowerCase(Locale.ROOT)
-                                .contains(charSearch.toLowerCase(Locale.ROOT))
-                        ) {
-                            resultList.add(row)
-                        }
-                    }
-                    resultList
-                }
-                val filterResults = FilterResults()
-                filterResults.values = temporalList
-                return filterResults
-            }
-
-            @Suppress("UNCHECKED_CAST")
-            override fun publishResults(constraint: CharSequence?, results: FilterResults?) {
-                temporalList = results?.values as ArrayList<FeatureFlagValue>
-                submitList(temporalList, shouldSaveListToBeFiltered = false)
-            }
-        }
     }
 }

@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.evercheck.flagly.databinding.ActivityFeatureFlagHandlerBinding
 import com.evercheck.flagly.developeroptions.adapter.FeatureFlagAdapter
 import com.evercheck.flagly.di.DaggerFeatureHandlerComponent
+import com.evercheck.flagly.utils.EMPTY
 import javax.inject.Inject
 
 class FeatureFlagHandlerActivity : AppCompatActivity(), FeatureFlagActivityContract.View {
@@ -28,12 +29,13 @@ class FeatureFlagHandlerActivity : AppCompatActivity(), FeatureFlagActivityContr
 
         presenter.bind(this)
         presenter.onViewReady()
+        presenter.filterFeatureFlagsByName()
 
         binding.setUpSearchView()
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when(item.getItemId()) {
+        return when (item.getItemId()) {
             android.R.id.home -> {
                 onBackPressed()
                 true
@@ -45,10 +47,10 @@ class FeatureFlagHandlerActivity : AppCompatActivity(), FeatureFlagActivityContr
     private fun ActivityFeatureFlagHandlerBinding.setUpSearchView() {
         svFeatureFlag.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
 
-            override fun onQueryTextSubmit(query: String?)  = false
+            override fun onQueryTextSubmit(query: String?) = false
 
             override fun onQueryTextChange(newText: String?): Boolean {
-                getFeatureFlagAdapter().filter.filter(newText)
+                presenter.filterFeatureFlagsByName(newText ?: EMPTY)
                 return false
             }
         })
@@ -85,7 +87,6 @@ class FeatureFlagHandlerActivity : AppCompatActivity(), FeatureFlagActivityContr
     override fun showReatureFlagValues(featureFlagValues: List<FeatureFlagValue>) {
         binding.getFeatureFlagAdapter()
             .submitList(featureFlagValues, shouldSaveListToBeFiltered = true)
-        binding.svFeatureFlag.setQuery(null, false)
     }
 
     private fun ActivityFeatureFlagHandlerBinding.getFeatureFlagAdapter(): FeatureFlagAdapter {
