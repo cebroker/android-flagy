@@ -1,8 +1,8 @@
 package com.evercheck.flagly.developeroptions
 
-import com.evercheck.flagly.featureflag.DynamicFeatureFlagHandler
-import com.evercheck.flagly.featureflag.FeatureFlagHandler
-import com.evercheck.flagly.featureflag.FeatureFlagProvider
+import com.evercheck.flagly.dataSource.local.DynamicFeatureFlagHandler
+import com.evercheck.flagly.dataSource.remote.FeatureFlagHandler
+import com.evercheck.flagly.dataSource.FeatureFlagProvider
 
 interface FeatureHandleResourceProvider {
 

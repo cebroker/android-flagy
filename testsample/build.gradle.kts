@@ -19,6 +19,15 @@ android {
         testInstrumentationRunner = AndroidConstants.TEST_RUNNER
     }
 
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
+    }
+
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
+
     buildTypes {
         getByName(BuildTypesConstants.RELEASE) {
             isMinifyEnabled = false
@@ -35,6 +44,7 @@ dependencies {
     implementation(Dependencies.ANDROID_X_CORE)
     implementation(Dependencies.APP_COMPAT)
     implementation(Dependencies.CONSTRAINT_LAYOUT)
+    implementation(Dependencies.LIFECYLE_VIEWMODEL)
 
     implementation(Dependencies.ESPRESSO_CONTRIB)
     implementation(Dependencies.ESPRESSO_INTENTS)
@@ -47,6 +57,9 @@ dependencies {
     androidTestImplementation(Dependencies.TEST_RUNNER)
 
     testImplementation(Dependencies.JUNIT)
-    
+    testImplementation(Dependencies.CORE_TESTING)
+    testImplementation(Dependencies.MOCKK)
+    testImplementation(Dependencies.KOTLINX_COROUTINES_TEST)
+
     implementation(project(mapOf("path" to ":app")))
 }

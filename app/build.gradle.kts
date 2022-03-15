@@ -35,6 +35,15 @@ android {
         }
     }
 
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
+    }
+
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
+
     viewBinding {
         isEnabled = true
     }
@@ -79,6 +88,7 @@ dependencies {
     implementation(Dependencies.RECYCLER_VIEW)
     implementation(Dependencies.COROUTINES)
     implementation(Dependencies.COROUTINES_ANDROID)
+    implementation(Dependencies.LIFECYLE_VIEWMODEL)
 
     implementation(Dependencies.DAGGER)
     implementation(Dependencies.DAGGER_ANDROID_SUPPORT)
@@ -88,5 +98,7 @@ dependencies {
     implementation(Dependencies.CONSTRAINT_LAYOUT)
 
     testImplementation(Dependencies.JUNIT)
-
+    testImplementation(Dependencies.CORE_TESTING)
+    testImplementation(Dependencies.MOCKK)
+    testImplementation(Dependencies.KOTLINX_COROUTINES_TEST)
 }

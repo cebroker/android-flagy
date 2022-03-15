@@ -1,9 +1,13 @@
 private const val COROUTINES_VERSION = "1.3.7"
-private const val DAGGER_VERSION = "2.28.1"
-private const val KOTLIN_VERSION = "1.3.72"
+private const val DAGGER_VERSION = "2.37"
+private const val KOTLIN_VERSION = "1.5.30"
 private const val ANDROID_X_CORE_VERSION = "1.3.0"
 private const val ESPRESSO_VERSION = "3.2.0"
 private const val TEST_RUNNER_VERSION = "1.2.0"
+private const val LIFECYCLE_VIEWMODEL_VERSION = "2.4.0"
+private const val MOCKK_VERSION = "1.12.2"
+private const val KOTLINX_COROUTINES_TEST_VERSION = "1.6.0"
+private const val CORE_TESTING_VERSION = "2.1.0"
 
 object Dependencies {
 
@@ -12,6 +16,8 @@ object Dependencies {
     const val COROUTINES = "org.jetbrains.kotlinx:kotlinx-coroutines-core:$COROUTINES_VERSION"
     const val COROUTINES_ANDROID =
         "org.jetbrains.kotlinx:kotlinx-coroutines-android:$COROUTINES_VERSION"
+    const val LIFECYLE_VIEWMODEL =
+        "androidx.lifecycle:lifecycle-viewmodel-ktx:$LIFECYCLE_VIEWMODEL_VERSION"
 
     const val DAGGER = "com.google.dagger:dagger:$DAGGER_VERSION"
     const val DAGGER_COMPILER = "com.google.dagger:dagger-compiler:$DAGGER_VERSION"
@@ -25,11 +31,16 @@ object Dependencies {
 
     const val CONSTRAINT_LAYOUT = "androidx.constraintlayout:constraintlayout:1.1.3"
 
-    const val JUNIT = "junit:junit:4.12"
+    const val JUNIT = "junit:junit:4.13.2"
 
     const val ESPRESSO_CONTRIB = "androidx.test.espresso:espresso-contrib:$ESPRESSO_VERSION"
     const val ESPRESSO_CORE = "androidx.test.espresso:espresso-core:$ESPRESSO_VERSION"
     const val ESPRESSO_INTENTS = "androidx.test.espresso:espresso-intents:$ESPRESSO_VERSION"
 
     const val TEST_RUNNER = "androidx.test:runner:$TEST_RUNNER_VERSION"
+
+    const val MOCKK = "io.mockk:mockk:$MOCKK_VERSION"
+    const val KOTLINX_COROUTINES_TEST =
+        "org.jetbrains.kotlinx:kotlinx-coroutines-test:$KOTLINX_COROUTINES_TEST_VERSION"
+    const val CORE_TESTING = "androidx.arch.core:core-testing:$CORE_TESTING_VERSION"
 }

@@ -3,19 +3,18 @@ package com.evercheck.flagly.developeroptions
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.evercheck.flagly.developeroptions.adapter.FeatureFlagValueChangedListener
-import com.evercheck.flagly.featureflag.DynamicFeatureFlagHandler
+import com.evercheck.flagly.domain.GetFeatureFlagUseCase
+import com.evercheck.flagly.domain.SetFeatureFlagUseCase
 import com.evercheck.flagly.featureflag.FeatureFlag
-import com.evercheck.flagly.featureflag.FeatureFlagHandler
-import com.evercheck.flagly.featureflag.FeatureFlagProvider
 import com.evercheck.flagly.utils.EMPTY
-import java.util.Locale
 import javax.inject.Inject
+import kotlinx.coroutines.launch
 
 class FeatureFlagHandlerViewModel @Inject constructor(
-    private val featureFlagProvider: FeatureFlagProvider,
-    private val remoteFeatureFlagHandler: FeatureFlagHandler,
-    private val localFeatureflagHandler: DynamicFeatureFlagHandler,
+    private val getFeatureFlagUseCase: GetFeatureFlagUseCase,
+    private val setFeatureFlagUseCase: SetFeatureFlagUseCase
 ) : ViewModel(), FeatureFlagValueChangedListener {
 
     private val _featureFlagValues = MutableLiveData<List<FeatureFlagValue>>()
@@ -29,15 +28,13 @@ class FeatureFlagHandlerViewModel @Inject constructor(
     }
 
     private fun setupFeatureFlagValues() {
-        _featureFlagValues.postValue(featureFlagProvider.provideAppSupportedFeatureflags()
-            .filter { it.name.toLowerCase(Locale.ROOT).contains(query) }
-            .map { featureFlag ->
-                getFeatureFlagValue(featureFlag)
-            })
+        viewModelScope.launch {
+            _featureFlagValues.postValue(getFeatureFlagUseCase(query))
+        }
     }
 
     override fun onFeatureFlagValueChanged(featureFlag: FeatureFlag, value: Boolean) {
-        localFeatureflagHandler.setValue(featureFlag, value)
+        setFeatureFlagUseCase(featureFlag, value)
     }
 
     override fun onOverrideValueChange(
@@ -45,28 +42,7 @@ class FeatureFlagHandlerViewModel @Inject constructor(
         override: Boolean,
         remoteValue: Boolean
     ) {
-        if (override) {
-            localFeatureflagHandler.setValue(featureFlag, remoteValue)
-        } else {
-            localFeatureflagHandler.removeOverridenValue(featureFlag)
-        }
+        setFeatureFlagUseCase(featureFlag, override, remoteValue)
         setupFeatureFlagValues()
     }
-
-    private fun getFeatureFlagValue(featureFlag: FeatureFlag): FeatureFlagValue {
-        val isOverride = localFeatureflagHandler.isValueOverriden(featureFlag)
-        return FeatureFlagValue(
-            featureFlag,
-            isOverride,
-            getLocalValue(featureFlag, getLocalValue(featureFlag, isOverride)),
-            remoteFeatureFlagHandler.isFeatureEnabled(featureFlag)
-        )
-    }
-
-    private fun getLocalValue(featureFlag: FeatureFlag, isOverride: Boolean): Boolean =
-        if (isOverride) {
-            localFeatureflagHandler.isFeatureEnabled(featureFlag)
-        } else {
-            false
-        }
 }

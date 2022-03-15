@@ -1,4 +1,6 @@
-package com.evercheck.flagly.featureflag
+package com.evercheck.flagly.dataSource
+
+import com.evercheck.flagly.featureflag.FeatureFlag
 
 interface FeatureFlagProvider {
 
