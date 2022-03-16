@@ -1,8 +1,8 @@
-package com.evercheck.flagly.dataSource.local
+package com.evercheck.flagly.data.dataSource.local
 
-import com.evercheck.flagly.dataSource.remote.FeatureFlagHandler
+import com.evercheck.flagly.data.dataSource.remote.FeatureFlagHandler
 import com.evercheck.flagly.exceptions.FeatureFlagNotPresentInHandlerException
-import com.evercheck.flagly.featureflag.FeatureFlag
+import com.evercheck.flagly.data.model.FeatureFlag
 
 interface DynamicFeatureFlagHandler : FeatureFlagHandler {
 

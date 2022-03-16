@@ -1,6 +1,6 @@
 package com.evercheck.flagly.developeroptions
 
-import com.evercheck.flagly.featureflag.FeatureFlag
+import com.evercheck.flagly.data.model.FeatureFlag
 
 data class FeatureFlagValue(
     val featureFlag: FeatureFlag,

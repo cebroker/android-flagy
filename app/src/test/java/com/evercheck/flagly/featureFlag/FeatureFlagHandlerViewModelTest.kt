@@ -4,8 +4,8 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.evercheck.flagly.MainCoroutineRule
 import com.evercheck.flagly.developeroptions.FeatureFlagHandlerViewModel
 import com.evercheck.flagly.developeroptions.FeatureFlagValue
-import com.evercheck.flagly.domain.GetFeatureFlagUseCase
-import com.evercheck.flagly.domain.SetFeatureFlagUseCase
+import com.evercheck.flagly.domain.useCase.GetFeatureFlagUseCase
+import com.evercheck.flagly.domain.useCase.SetFeatureFlagUseCase
 import io.mockk.coEvery
 import io.mockk.coVerifyAll
 import io.mockk.mockk
@@ -59,7 +59,7 @@ class FeatureFlagHandlerViewModelTest {
         viewModel.filterFeatureFlagsByName(SEARCH_TEXT_TEST)
 
         coVerifyAll { getFeatureFlagUseCase(SEARCH_TEXT_TEST) }
-        Assert.assertEquals(featureFlagValues, viewModel.featureFlagValues.value)
+        Assert.assertEquals(featureFlagValues, viewModel.state.value)
     }
 
     @After

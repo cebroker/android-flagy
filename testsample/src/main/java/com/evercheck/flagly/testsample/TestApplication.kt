@@ -2,10 +2,10 @@ package com.evercheck.flagly.testsample
 
 import android.app.Application
 import com.evercheck.flagly.developeroptions.FeatureHandleResourceProvider
-import com.evercheck.flagly.dataSource.local.DynamicFeatureFlagHandler
-import com.evercheck.flagly.featureflag.FeatureFlag
-import com.evercheck.flagly.dataSource.remote.FeatureFlagHandler
-import com.evercheck.flagly.dataSource.FeatureFlagProvider
+import com.evercheck.flagly.data.dataSource.local.DynamicFeatureFlagHandler
+import com.evercheck.flagly.data.model.FeatureFlag
+import com.evercheck.flagly.data.dataSource.remote.FeatureFlagHandler
+import com.evercheck.flagly.data.dataSource.FeatureFlagProvider
 
 class TestApplication : Application(), FeatureHandleResourceProvider {
 

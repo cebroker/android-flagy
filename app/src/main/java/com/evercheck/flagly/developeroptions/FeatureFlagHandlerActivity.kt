@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.MenuItem
 import android.widget.SearchView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.evercheck.flagly.databinding.ActivityFeatureFlagHandlerBinding
@@ -29,9 +28,9 @@ class FeatureFlagHandlerActivity : AppCompatActivity() {
         setup()
 
         viewModel.filterFeatureFlagsByName()
-        viewModel.featureFlagValues.observe(this) { featureFlagValues ->
+        viewModel.state.observe(this) { state ->
             binding.getFeatureFlagAdapter()
-                .submitList(featureFlagValues, shouldSaveListToBeFiltered = true)
+                .submitList(state.featureFlagValues, shouldSaveListToBeFiltered = true)
         }
         binding.setUpSearchView()
     }
