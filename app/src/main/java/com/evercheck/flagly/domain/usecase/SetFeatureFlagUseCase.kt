@@ -1,7 +1,7 @@
-package com.evercheck.flagly.domain.useCase
+package com.evercheck.flagly.domain.usecase
 
-import com.evercheck.flagly.data.dataSource.local.DynamicFeatureFlagHandler
-import com.evercheck.flagly.data.model.FeatureFlag
+import com.evercheck.flagly.data.DynamicFeatureFlagHandler
+import com.evercheck.flagly.domain.model.FeatureFlag
 import javax.inject.Inject
 
 class SetFeatureFlagUseCase @Inject constructor(

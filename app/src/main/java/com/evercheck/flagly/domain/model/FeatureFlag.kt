@@ -1,4 +1,4 @@
-package com.evercheck.flagly.data.model
+package com.evercheck.flagly.domain.model
 
 interface FeatureFlag{
 

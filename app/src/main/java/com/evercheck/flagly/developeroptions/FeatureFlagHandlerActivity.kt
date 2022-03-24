@@ -28,7 +28,7 @@ class FeatureFlagHandlerActivity : AppCompatActivity() {
         setup()
 
         viewModel.filterFeatureFlagsByName()
-        viewModel.state.observe(this) { state ->
+        viewModel.featureFlagState.observe(this) { state ->
             binding.getFeatureFlagAdapter()
                 .submitList(state.featureFlagValues, shouldSaveListToBeFiltered = true)
         }

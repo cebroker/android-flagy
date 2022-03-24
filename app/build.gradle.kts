@@ -99,6 +99,6 @@ dependencies {
 
     testImplementation(Dependencies.JUNIT)
     testImplementation(Dependencies.CORE_TESTING)
-    testImplementation(Dependencies.MOCKK)
     testImplementation(Dependencies.KOTLINX_COROUTINES_TEST)
+    testImplementation(Dependencies.MOCKK)
 }

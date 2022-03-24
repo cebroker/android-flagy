@@ -5,7 +5,7 @@ private const val ANDROID_X_CORE_VERSION = "1.3.0"
 private const val ESPRESSO_VERSION = "3.2.0"
 private const val TEST_RUNNER_VERSION = "1.2.0"
 private const val LIFECYCLE_VIEWMODEL_VERSION = "2.4.0"
-private const val MOCKK_VERSION = "1.12.2"
+private const val MOCKK_VERSION = "1.12.3"
 private const val KOTLINX_COROUTINES_TEST_VERSION = "1.6.0"
 private const val CORE_TESTING_VERSION = "2.1.0"
 

@@ -1,6 +1,6 @@
 package com.evercheck.flagly.testsample
 
-import com.evercheck.flagly.data.model.FeatureFlag
+import com.evercheck.flagly.domain.model.FeatureFlag
 
 object FeatureFlagOne : FeatureFlag {
     override val name: String

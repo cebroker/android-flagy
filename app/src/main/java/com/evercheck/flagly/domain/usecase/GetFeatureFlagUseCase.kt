@@ -1,10 +1,10 @@
-package com.evercheck.flagly.domain.useCase
+package com.evercheck.flagly.domain.usecase
 
-import com.evercheck.flagly.data.dataSource.FeatureFlagProvider
-import com.evercheck.flagly.data.dataSource.local.DynamicFeatureFlagHandler
-import com.evercheck.flagly.data.dataSource.remote.FeatureFlagHandler
+import com.evercheck.flagly.data.FeatureFlagProvider
+import com.evercheck.flagly.data.DynamicFeatureFlagHandler
+import com.evercheck.flagly.data.FeatureFlagHandler
 import com.evercheck.flagly.developeroptions.FeatureFlagValue
-import com.evercheck.flagly.data.model.FeatureFlag
+import com.evercheck.flagly.domain.model.FeatureFlag
 import com.evercheck.flagly.utils.EMPTY
 import java.util.Locale
 import javax.inject.Inject
@@ -12,17 +12,17 @@ import javax.inject.Inject
 class GetFeatureFlagUseCase @Inject constructor(
     private val featureFlagProvider: FeatureFlagProvider,
     private val remoteFeatureFlagHandler: FeatureFlagHandler,
-    private val localFeatureflagHandler: DynamicFeatureFlagHandler
+    private val localFeatureFlagHandler: DynamicFeatureFlagHandler
 ) {
     operator fun invoke(query: String = EMPTY): List<FeatureFlagValue> =
         featureFlagProvider.provideAppSupportedFeatureflags()
-            .filter { it.name.lowercase(Locale.ROOT).contains(query) }
+            .filter { it.name.contains(query, true) }
             .map { featureFlag ->
                 getFeatureFlagValue(featureFlag)
             }
 
     private fun getFeatureFlagValue(featureFlag: FeatureFlag): FeatureFlagValue {
-        val isOverride = localFeatureflagHandler.isValueOverriden(featureFlag)
+        val isOverride = localFeatureFlagHandler.isValueOverriden(featureFlag)
         return FeatureFlagValue(
             featureFlag,
             isOverride,
@@ -33,7 +33,7 @@ class GetFeatureFlagUseCase @Inject constructor(
 
     private fun getLocalValue(featureFlag: FeatureFlag, isOverride: Boolean): Boolean =
         if (isOverride) {
-            localFeatureflagHandler.isFeatureEnabled(featureFlag)
+            localFeatureFlagHandler.isFeatureEnabled(featureFlag)
         } else {
             false
         }
