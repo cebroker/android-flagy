@@ -18,12 +18,10 @@ import kotlinx.coroutines.withContext
 class FeatureFlagHandlerViewModel @Inject constructor(
     private val getFeatureFlagUseCase: GetFeatureFlagUseCase,
     private val setFeatureFlagUseCase: SetFeatureFlagUseCase,
-    coroutineContextProvider: CoroutineContextProvider,
+    private val coroutineContextProvider: CoroutineContextProvider,
 ) : ViewModel(), FeatureFlagValueChangedListener {
 
-    private val coroutineContext = coroutineContextProvider.backgroundDispatcher + SupervisorJob()
-
-    private val _featureFlagState = MutableLiveData<FeatureFlagState>(FeatureFlagState())
+    private val _featureFlagState = MutableLiveData(FeatureFlagState())
     val featureFlagState: LiveData<FeatureFlagState> get() = _featureFlagState
 
     fun filterFeatureFlagsByName(query: String = EMPTY) {
@@ -33,7 +31,7 @@ class FeatureFlagHandlerViewModel @Inject constructor(
 
     private fun setupFeatureFlagValues() {
         viewModelScope.launch {
-            withContext(this@FeatureFlagHandlerViewModel.coroutineContext) {
+            withContext(coroutineContextProvider.backgroundDispatcher) {
                 _featureFlagState.postValue(
                     _featureFlagState.value?.copy(
                         featureFlagValues = getFeatureFlagUseCase(

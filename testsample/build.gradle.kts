@@ -44,7 +44,7 @@ dependencies {
     implementation(Dependencies.ANDROID_X_CORE)
     implementation(Dependencies.APP_COMPAT)
     implementation(Dependencies.CONSTRAINT_LAYOUT)
-    implementation(Dependencies.LIFECYLE_VIEWMODEL)
+    implementation(Dependencies.LIFECYCLE_VIEWMODEL)
 
     implementation(Dependencies.ESPRESSO_CONTRIB)
     implementation(Dependencies.ESPRESSO_INTENTS)

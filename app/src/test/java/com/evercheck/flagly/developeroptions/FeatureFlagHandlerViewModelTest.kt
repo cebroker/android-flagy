@@ -10,6 +10,7 @@ import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
 import java.util.Random
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.TestCoroutineDispatcher
 import org.junit.Assert
@@ -46,7 +47,12 @@ class FeatureFlagHandlerViewModelTest {
 
     @Before
     fun setup() {
-        val coroutineContextProvider = CoroutineContextProvider(testDispatcher, testDispatcher)
+        val coroutineContextProvider = object : CoroutineContextProvider {
+            override val mainDispatcher: CoroutineDispatcher
+                get() = testDispatcher
+            override val backgroundDispatcher: CoroutineDispatcher
+                get() = testDispatcher
+        }
 
         viewModel = FeatureFlagHandlerViewModel(
             getFeatureFlagUseCase,
@@ -86,27 +92,23 @@ class FeatureFlagHandlerViewModelTest {
 
     @Test
     fun onFeatureFlagValueChanged() {
-        val featureFlagsValues = generateFeatureFlag()
-        val numberRandom = Random().nextInt(featureFlagsValues.size)
-        val featureFlagRandom = featureFlagsValues[numberRandom]
+        val flag = mockk<FeatureFlag>()
 
-        viewModel.onFeatureFlagValueChanged(featureFlagRandom, true)
+        viewModel.onFeatureFlagValueChanged(flag, true)
 
         verify(exactly = 1) {
-            setFeatureFlagUseCase(featureFlagRandom, true)
+            setFeatureFlagUseCase(flag, true)
         }
     }
 
     @Test
     fun onOverrideValueChange() {
-        val featureFlagsValues = generateFeatureFlag()
-        val numberRandom = Random().nextInt(featureFlagsValues.size)
-        val featureFlagRandom = featureFlagsValues[numberRandom]
+        val flag = mockk<FeatureFlag>()
 
-        viewModel.onOverrideValueChange(featureFlagRandom, override = true, remoteValue = false)
+        viewModel.onOverrideValueChange(flag, override = true, remoteValue = false)
 
         verify(exactly = 1) {
-            setFeatureFlagUseCase(featureFlagRandom, override = true, remoteValue = false)
+            setFeatureFlagUseCase(flag, override = true, remoteValue = false)
         }
     }
 }

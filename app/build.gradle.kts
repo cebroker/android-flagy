@@ -88,7 +88,7 @@ dependencies {
     implementation(Dependencies.RECYCLER_VIEW)
     implementation(Dependencies.COROUTINES)
     implementation(Dependencies.COROUTINES_ANDROID)
-    implementation(Dependencies.LIFECYLE_VIEWMODEL)
+    implementation(Dependencies.LIFECYCLE_VIEWMODEL)
 
     implementation(Dependencies.DAGGER)
     implementation(Dependencies.DAGGER_ANDROID_SUPPORT)

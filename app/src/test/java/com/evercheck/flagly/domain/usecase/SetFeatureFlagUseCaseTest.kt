@@ -25,7 +25,7 @@ class SetFeatureFlagUseCaseTest {
     }
 
     @Test
-    fun `valid with the value from override is true or false`() {
+    fun `given override true when Invoke is call `() {
         val numberRandom = Random().nextInt(2)
         val value = numberRandom % 2 == 0
 
@@ -42,10 +42,10 @@ class SetFeatureFlagUseCaseTest {
         }
     }
 
-    @Test
+    /*@Test
     fun `valid with the value from override is true or fale`() {
-        val numberRandom = Random().nextInt(2)
-        val value = numberRandom % 2 == 0
+        val flag = mockk<FeatureFlag>()
+
 
         setFeatureFlagUseCase(featureFlag, value, remoteValue = true)
 
@@ -58,5 +58,5 @@ class SetFeatureFlagUseCaseTest {
                 localFeatureFlagHandler.removeOverridenValue(featureFlag)
             }
         }
-    }
+    }*/
 }

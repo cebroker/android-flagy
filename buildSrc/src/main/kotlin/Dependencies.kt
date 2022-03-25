@@ -16,7 +16,7 @@ object Dependencies {
     const val COROUTINES = "org.jetbrains.kotlinx:kotlinx-coroutines-core:$COROUTINES_VERSION"
     const val COROUTINES_ANDROID =
         "org.jetbrains.kotlinx:kotlinx-coroutines-android:$COROUTINES_VERSION"
-    const val LIFECYLE_VIEWMODEL =
+    const val LIFECYCLE_VIEWMODEL =
         "androidx.lifecycle:lifecycle-viewmodel-ktx:$LIFECYCLE_VIEWMODEL_VERSION"
 
     const val DAGGER = "com.google.dagger:dagger:$DAGGER_VERSION"
