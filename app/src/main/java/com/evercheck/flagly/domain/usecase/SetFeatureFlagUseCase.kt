@@ -8,11 +8,7 @@ class SetFeatureFlagUseCase @Inject constructor(
     private val localFeatureflagHandler: DynamicFeatureFlagHandler
 ) {
 
-    operator fun invoke(featureFlag: FeatureFlag, value: Boolean) {
-        localFeatureflagHandler.setValue(featureFlag, value)
-    }
-
-    operator fun invoke(featureFlag: FeatureFlag, override: Boolean, remoteValue: Boolean) {
+    operator fun invoke(featureFlag: FeatureFlag, remoteValue: Boolean, override: Boolean = true) {
         if (override) {
             localFeatureflagHandler.setValue(featureFlag, remoteValue)
         } else {

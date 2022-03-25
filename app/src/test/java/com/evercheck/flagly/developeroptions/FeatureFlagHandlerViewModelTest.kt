@@ -62,7 +62,7 @@ class FeatureFlagHandlerViewModelTest {
     }
 
     @Test
-    fun filterFeatureFlagsByName() {
+    fun `given a list of feature flags when a random name then filter the list`() {
         val featureFlagsValues = generateFeatureFlag()
         val numberRandom = Random().nextInt(featureFlagsValues.size)
         val featureFlagRandom = featureFlagsValues[numberRandom]
@@ -91,7 +91,7 @@ class FeatureFlagHandlerViewModelTest {
     }
 
     @Test
-    fun onFeatureFlagValueChanged() {
+    fun `given a feature flag when the override is true then call invoke`() {
         val flag = mockk<FeatureFlag>()
 
         viewModel.onFeatureFlagValueChanged(flag, true)
@@ -102,13 +102,14 @@ class FeatureFlagHandlerViewModelTest {
     }
 
     @Test
-    fun onOverrideValueChange() {
+    fun `given a feature flag, override true and remote false when the invoke is called then the update and get invokes are executed`() {
         val flag = mockk<FeatureFlag>()
 
         viewModel.onOverrideValueChange(flag, override = true, remoteValue = false)
 
         verify(exactly = 1) {
             setFeatureFlagUseCase(flag, override = true, remoteValue = false)
+            getFeatureFlagUseCase()
         }
     }
 }

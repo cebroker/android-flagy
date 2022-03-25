@@ -4,9 +4,9 @@ import com.evercheck.flagly.data.DynamicFeatureFlagHandler
 import com.evercheck.flagly.domain.model.FeatureFlag
 import io.mockk.mockk
 import io.mockk.verify
-import java.util.Random
 import org.junit.Before
 import org.junit.Test
+import java.util.Random
 
 class SetFeatureFlagUseCaseTest {
 
@@ -25,15 +25,15 @@ class SetFeatureFlagUseCaseTest {
     }
 
     @Test
-    fun `given override true when Invoke is call `() {
+    fun `given override true or false when invoking the call then if the override is true you should execute the setValue method else removeOverridenValue `() {
         val numberRandom = Random().nextInt(2)
-        val value = numberRandom % 2 == 0
+        val override = numberRandom % 2 == 0
 
-        setFeatureFlagUseCase(featureFlag, value, remoteValue = true)
+        setFeatureFlagUseCase(featureFlag, true, override)
 
-        if (value) {
+        if (override) {
             verify(exactly = 1) {
-                localFeatureFlagHandler.setValue(featureFlag, value)
+                localFeatureFlagHandler.setValue(featureFlag, override)
             }
         } else {
             verify(exactly = 1) {
@@ -41,22 +41,4 @@ class SetFeatureFlagUseCaseTest {
             }
         }
     }
-
-    /*@Test
-    fun `valid with the value from override is true or fale`() {
-        val flag = mockk<FeatureFlag>()
-
-
-        setFeatureFlagUseCase(featureFlag, value, remoteValue = true)
-
-        if (value) {
-            verify(exactly = 1) {
-                localFeatureFlagHandler.setValue(featureFlag, value)
-            }
-        } else {
-            verify(exactly = 1) {
-                localFeatureFlagHandler.removeOverridenValue(featureFlag)
-            }
-        }
-    }*/
 }

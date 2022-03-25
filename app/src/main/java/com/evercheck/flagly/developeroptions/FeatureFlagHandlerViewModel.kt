@@ -10,10 +10,9 @@ import com.evercheck.flagly.domain.usecase.GetFeatureFlagUseCase
 import com.evercheck.flagly.domain.usecase.SetFeatureFlagUseCase
 import com.evercheck.flagly.utils.CoroutineContextProvider
 import com.evercheck.flagly.utils.EMPTY
-import javax.inject.Inject
-import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import javax.inject.Inject
 
 class FeatureFlagHandlerViewModel @Inject constructor(
     private val getFeatureFlagUseCase: GetFeatureFlagUseCase,
@@ -52,7 +51,7 @@ class FeatureFlagHandlerViewModel @Inject constructor(
         override: Boolean,
         remoteValue: Boolean
     ) {
-        setFeatureFlagUseCase(featureFlag, override, remoteValue)
+        setFeatureFlagUseCase(featureFlag, remoteValue, override)
         setupFeatureFlagValues()
     }
 }
