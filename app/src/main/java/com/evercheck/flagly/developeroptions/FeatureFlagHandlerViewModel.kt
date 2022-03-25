@@ -11,15 +11,17 @@ import com.evercheck.flagly.domain.usecase.SetFeatureFlagUseCase
 import com.evercheck.flagly.utils.CoroutineContextProvider
 import com.evercheck.flagly.utils.EMPTY
 import javax.inject.Inject
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class FeatureFlagHandlerViewModel @Inject constructor(
     private val getFeatureFlagUseCase: GetFeatureFlagUseCase,
-    private val setFeatureFlagUseCase: SetFeatureFlagUseCase
+    private val setFeatureFlagUseCase: SetFeatureFlagUseCase,
+    coroutineContextProvider: CoroutineContextProvider,
 ) : ViewModel(), FeatureFlagValueChangedListener {
+
+    private val coroutineContext = coroutineContextProvider.backgroundDispatcher + SupervisorJob()
 
     private val _featureFlagState = MutableLiveData<FeatureFlagState>(FeatureFlagState())
     val featureFlagState: LiveData<FeatureFlagState> get() = _featureFlagState
@@ -31,7 +33,7 @@ class FeatureFlagHandlerViewModel @Inject constructor(
 
     private fun setupFeatureFlagValues() {
         viewModelScope.launch {
-            withContext(Dispatchers.IO + SupervisorJob()) {
+            withContext(this@FeatureFlagHandlerViewModel.coroutineContext) {
                 _featureFlagState.postValue(
                     _featureFlagState.value?.copy(
                         featureFlagValues = getFeatureFlagUseCase(

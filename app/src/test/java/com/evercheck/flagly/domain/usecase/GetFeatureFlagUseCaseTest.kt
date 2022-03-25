@@ -8,8 +8,7 @@ import com.evercheck.flagly.domain.model.FeatureFlag
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
-import java.util.Locale
-import kotlinx.coroutines.runBlocking
+import java.util.Random
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
@@ -31,39 +30,59 @@ class GetFeatureFlagUseCaseTest {
         )
     }
 
+    private val characters = ('a'..'z') + ('A'..'Z')
+    private fun generateFeatureFlag(): List<FeatureFlag> = (0..Random().nextInt(6)).map {
+        characters.shuffled().get(it).toString()
+    }.toSet()
+        .map {
+            object : FeatureFlag {
+                override val name: String
+                    get() = it
+            }
+        }
+
     @Test
-    fun `get movie from remote when is not found in local storage`() {
-        val featureFlagOne = object : FeatureFlag {
-            override val name: String
-                get() = "One"
-        }
-        val featureFlagTwo = object : FeatureFlag {
-            override val name: String
-                get() = "Two"
-        }
-        val featureFlagThree = object : FeatureFlag {
-            override val name: String
-                get() = "Three"
-        }
-
-
-        val featureFlagMock = listOf<FeatureFlag>(featureFlagOne, featureFlagTwo, featureFlagThree)
-        val expected = listOf<FeatureFlagValue>(FeatureFlagValue(featureFlagTwo))
+    fun `get a specific feature flag`() {
+        val featureFlagsValues = generateFeatureFlag()
+        val numberRandom = Random().nextInt(featureFlagsValues.size)
+        val featureFlagRandom = FeatureFlagValue(featureFlagsValues[numberRandom])
 
         every {
             featureFlagProvider.provideAppSupportedFeatureflags()
         } answers {
-            featureFlagMock
+            featureFlagsValues
         }
 
-        val response = getFeatureFlagUseCase(QUERY_DEFAULT_TEST)
+        val response = getFeatureFlagUseCase(featureFlagRandom.featureFlag.name)
 
         verify(exactly = 1) {
             featureFlagProvider.provideAppSupportedFeatureflags()
+
+            localFeatureFlagHandler.isValueOverriden(featureFlagRandom.featureFlag)
+            remoteFeatureFlagHandler.isFeatureEnabled(featureFlagRandom.featureFlag)
+        }
+        Assert.assertEquals(featureFlagRandom, response[0])
+    }
+
+    @Test
+    fun `validate when a feature is overwritten`() {
+        val featureFlagsValues = generateFeatureFlag()
+        val numberRandom = Random().nextInt(featureFlagsValues.size)
+        val featureFlagRandom = FeatureFlagValue(featureFlagsValues[numberRandom])
+
+        localFeatureFlagHandler.setValue(featureFlagRandom.featureFlag, true)
+
+        every {
+            featureFlagProvider.provideAppSupportedFeatureflags()
+        } answers {
+            featureFlagsValues
         }
 
-        Assert.assertEquals(expected, response)
+        val response = getFeatureFlagUseCase(featureFlagRandom.featureFlag.name)
+
+        verify(exactly = 1) {
+            localFeatureFlagHandler.isFeatureEnabled(featureFlagRandom.featureFlag)
+        }
+        Assert.assertEquals(featureFlagRandom, response[0])
     }
 }
-
-private const val QUERY_DEFAULT_TEST = "TWO"
