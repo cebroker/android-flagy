@@ -30,7 +30,7 @@ class FeatureFlagHandlerViewModel @Inject constructor(
 
     private fun setupFeatureFlagValues() {
         viewModelScope.launch {
-            withContext(coroutineContextProvider.backgroundDispatcher) {
+            withContext(coroutineContextProvider.io) {
                 _featureFlagState.postValue(
                     _featureFlagState.value?.copy(
                         featureFlagValues = getFeatureFlagUseCase(

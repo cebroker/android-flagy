@@ -36,7 +36,7 @@ class FeatureFlagHandlerViewModelTest {
 
     private val characters = ('a'..'z') + ('A'..'Z')
     private fun generateFeatureFlag(): List<FeatureFlag> = (0..Random().nextInt(6)).map {
-        characters.shuffled().get(it).toString()
+        characters.shuffled()[it].toString()
     }.toSet()
         .map {
             object : FeatureFlag {
@@ -48,9 +48,7 @@ class FeatureFlagHandlerViewModelTest {
     @Before
     fun setup() {
         val coroutineContextProvider = object : CoroutineContextProvider {
-            override val mainDispatcher: CoroutineDispatcher
-                get() = testDispatcher
-            override val backgroundDispatcher: CoroutineDispatcher
+            override val io: CoroutineDispatcher
                 get() = testDispatcher
         }
 

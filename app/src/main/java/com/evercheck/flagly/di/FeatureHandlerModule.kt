@@ -14,9 +14,7 @@ object FeatureHandlerModule {
     @Provides
     fun provideCoroutineContextProvider() =
         object : CoroutineContextProvider {
-            override val mainDispatcher: CoroutineDispatcher
-                get() = Dispatchers.Main
-            override val backgroundDispatcher: CoroutineDispatcher
+            override val io: CoroutineDispatcher
                 get() = Dispatchers.IO
 
         }
