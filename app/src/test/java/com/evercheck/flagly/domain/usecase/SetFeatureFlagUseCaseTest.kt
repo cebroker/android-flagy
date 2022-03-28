@@ -6,7 +6,6 @@ import io.mockk.mockk
 import io.mockk.verify
 import org.junit.Before
 import org.junit.Test
-import java.util.Random
 
 class SetFeatureFlagUseCaseTest {
 
@@ -29,14 +28,8 @@ class SetFeatureFlagUseCaseTest {
         val override = true
         setFeatureFlagUseCase(featureFlag, true, override)
 
-        if (override) {
-            verify(exactly = 1) {
-                localFeatureFlagHandler.setValue(featureFlag, override)
-            }
-        } else {
-            verify(exactly = 1) {
-                localFeatureFlagHandler.removeOverridenValue(featureFlag)
-            }
+        verify(exactly = 1) {
+            localFeatureFlagHandler.setValue(featureFlag, override)
         }
     }
 
@@ -46,14 +39,8 @@ class SetFeatureFlagUseCaseTest {
 
         setFeatureFlagUseCase(featureFlag, true, override)
 
-        if (override) {
-            verify(exactly = 1) {
-                localFeatureFlagHandler.setValue(featureFlag, override)
-            }
-        } else {
-            verify(exactly = 1) {
-                localFeatureFlagHandler.removeOverridenValue(featureFlag)
-            }
+        verify(exactly = 1) {
+            localFeatureFlagHandler.removeOverridenValue(featureFlag)
         }
     }
 }
