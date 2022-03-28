@@ -1,7 +1,6 @@
 package com.evercheck.flagly.developeroptions
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import com.evercheck.flagly.MainCoroutineRule
 import com.evercheck.flagly.domain.model.FeatureFlag
 import com.evercheck.flagly.domain.usecase.GetFeatureFlagUseCase
 import com.evercheck.flagly.domain.usecase.SetFeatureFlagUseCase
@@ -9,22 +8,24 @@ import com.evercheck.flagly.utils.CoroutineContextProvider
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
-import java.util.Random
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.test.TestCoroutineDispatcher
+import kotlinx.coroutines.test.UnconfinedTestDispatcher
+import kotlinx.coroutines.test.resetMain
+import kotlinx.coroutines.test.runTest
+import kotlinx.coroutines.test.setMain
+import org.junit.After
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
+import java.util.Random
 
 @ExperimentalCoroutinesApi
 class FeatureFlagHandlerViewModelTest {
 
-    private val testDispatcher = TestCoroutineDispatcher()
-
-    @get:Rule
-    val mainCoroutineRule = MainCoroutineRule(testDispatcher)
+    private val testDispatcher = UnconfinedTestDispatcher()
 
     @get:Rule
     var instantExecutorRule = InstantTaskExecutorRule()
@@ -47,6 +48,8 @@ class FeatureFlagHandlerViewModelTest {
 
     @Before
     fun setup() {
+        Dispatchers.setMain(testDispatcher)
+
         val coroutineContextProvider = object : CoroutineContextProvider {
             override val io: CoroutineDispatcher
                 get() = testDispatcher
@@ -59,8 +62,13 @@ class FeatureFlagHandlerViewModelTest {
         )
     }
 
+    @After
+    fun tearDown() {
+        Dispatchers.resetMain()
+    }
+
     @Test
-    fun `given a list of feature flags when a random name then filter the list`() {
+    fun `given a list of feature flags when a random name then filter the list`() = runTest {
         val featureFlagsValues = generateFeatureFlag()
         val numberRandom = Random().nextInt(featureFlagsValues.size)
         val featureFlagRandom = featureFlagsValues[numberRandom]
@@ -89,7 +97,7 @@ class FeatureFlagHandlerViewModelTest {
     }
 
     @Test
-    fun `given a feature flag when the override is true then call invoke`() {
+    fun `given a feature flag when the override is true then call invoke`() = runTest {
         val flag = mockk<FeatureFlag>()
 
         viewModel.onFeatureFlagValueChanged(flag, true)
@@ -100,7 +108,7 @@ class FeatureFlagHandlerViewModelTest {
     }
 
     @Test
-    fun `given a feature flag, override true and remote false when the invoke is called then the update and get invokes are executed`() {
+    fun `given a feature flag, override true and remote false when the invoke is called then the update and get invokes are executed`() = runTest {
         val flag = mockk<FeatureFlag>()
 
         viewModel.onOverrideValueChange(flag, override = true, remoteValue = false)
