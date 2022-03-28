@@ -32,19 +32,19 @@ class FeatureFlagHandlerViewModelTest {
 
     private val getFeatureFlagUseCase = mockk<GetFeatureFlagUseCase>(relaxed = true)
     private val setFeatureFlagUseCase = mockk<SetFeatureFlagUseCase>(relaxed = true)
+    private val flags = listOf<FeatureFlag>(mockk(), mockk(), mockk(), mockk(), mockk())
 
     private lateinit var viewModel: FeatureFlagHandlerViewModel
 
-    private val characters = ('a'..'z') + ('A'..'Z')
-    private fun generateFeatureFlag(): List<FeatureFlag> = (0..Random().nextInt(6)).map {
-        characters.shuffled()[it].toString()
-    }.toSet()
-        .map {
-            object : FeatureFlag {
-                override val name: String
-                    get() = it
+    init {
+        flags.forEachIndexed { index, it ->
+            every {
+                it.name
+            } answers {
+                "Flag$index"
             }
         }
+    }
 
     @Before
     fun setup() {
@@ -69,31 +69,22 @@ class FeatureFlagHandlerViewModelTest {
 
     @Test
     fun `given a list of feature flags when a random name then filter the list`() = runTest {
-        val featureFlagsValues = generateFeatureFlag()
-        val numberRandom = Random().nextInt(featureFlagsValues.size)
-        val featureFlagRandom = featureFlagsValues[numberRandom]
-        val featureFlagsFilter = featureFlagsValues.filter {
-            it.name.contains(
-                featureFlagRandom.name,
-                true
-            )
-        }.map {
-            FeatureFlagValue(it)
-        }
+        val values = flags.map { FeatureFlagValue(it) }.toMutableList()
+        values[0] = FeatureFlagValue(values[0].featureFlag, true)
 
         every {
-            getFeatureFlagUseCase(featureFlagRandom.name)
+            getFeatureFlagUseCase(QUERY_SEARCH_TEST)
         } answers {
-            featureFlagsFilter
+            values
         }
 
-        viewModel.filterFeatureFlagsByName(featureFlagRandom.name)
+        viewModel.filterFeatureFlagsByName(QUERY_SEARCH_TEST)
 
         verify(exactly = 1) {
-            getFeatureFlagUseCase(featureFlagRandom.name)
+            getFeatureFlagUseCase(QUERY_SEARCH_TEST)
         }
 
-        Assert.assertEquals(featureFlagsFilter, viewModel.featureFlagState.value?.featureFlagValues)
+        Assert.assertEquals(values, viewModel.featureFlagState.value?.featureFlagValues)
     }
 
     @Test
@@ -119,3 +110,4 @@ class FeatureFlagHandlerViewModelTest {
         }
     }
 }
+private const val QUERY_SEARCH_TEST = "fl"
