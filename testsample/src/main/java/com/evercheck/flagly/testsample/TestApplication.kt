@@ -43,7 +43,7 @@ class TestApplication : Application(), FeatureHandleResourceProvider {
 
     override fun getRemoteFeatureFlagHandler(): FeatureFlagHandler = object : FeatureFlagHandler {
         override fun isFeatureEnabled(featureFlag: FeatureFlag): Boolean {
-            return featureFlag is FeatureFlagOne || featureFlag is FeatureFlagThree || featureFlag is FeatureFlagFive
+            return featureFlag is FeatureFlagOne ||  featureFlag is FeatureFlagTwo
         }
     }
 
