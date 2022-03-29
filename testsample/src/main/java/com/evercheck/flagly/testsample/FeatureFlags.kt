@@ -1,29 +1,29 @@
 package com.evercheck.flagly.testsample
 
-import com.evercheck.flagly.featureflag.FeatureFlag
+import com.evercheck.flagly.domain.model.FeatureFlag
 
-object FeatureFlagOne : FeatureFlag{
+object FeatureFlagOne : FeatureFlag {
     override val name: String
         get() = "one"
 }
 
-object FeatureFlagTwo : FeatureFlag{
+object FeatureFlagTwo : FeatureFlag {
     override val name: String
         get() = "two"
 }
 
 
-object FeatureFlagThree : FeatureFlag{
+object FeatureFlagThree : FeatureFlag {
     override val name: String
         get() = "three"
 }
 
-object FeatureFlagFour : FeatureFlag{
+object FeatureFlagFour : FeatureFlag {
     override val name: String
         get() = "four"
 }
 
-object FeatureFlagFive : FeatureFlag{
+object FeatureFlagFive : FeatureFlag {
     override val name: String
         get() = "five"
 }

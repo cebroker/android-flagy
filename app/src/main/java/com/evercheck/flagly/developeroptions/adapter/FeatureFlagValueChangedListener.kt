@@ -1,6 +1,6 @@
 package com.evercheck.flagly.developeroptions.adapter
 
-import com.evercheck.flagly.featureflag.FeatureFlag
+import com.evercheck.flagly.domain.model.FeatureFlag
 
 
 interface FeatureFlagValueChangedListener {

@@ -12,30 +12,31 @@ import com.evercheck.flagly.di.DaggerFeatureHandlerComponent
 import com.evercheck.flagly.utils.EMPTY
 import javax.inject.Inject
 
-class FeatureFlagHandlerActivity : AppCompatActivity(), FeatureFlagActivityContract.View {
+class FeatureFlagHandlerActivity : AppCompatActivity() {
 
     @Inject
-    lateinit var presenter: FeatureFlagActivityContract.Presenter
+    lateinit var viewModel: FeatureFlagHandlerViewModel
     private lateinit var binding: ActivityFeatureFlagHandlerBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityFeatureFlagHandlerBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         setupDependencyInjection()
+        setup()
 
-        presenter.bind(this)
-        presenter.onViewReady()
-        presenter.filterFeatureFlagsByName()
-
+        viewModel.filterFeatureFlagsByName()
+        viewModel.featureFlagState.observe(this) { state ->
+            binding.getFeatureFlagAdapter()
+                .submitList(state.featureFlagValues, shouldSaveListToBeFiltered = true)
+        }
         binding.setUpSearchView()
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.getItemId()) {
+        return when (item.itemId) {
             android.R.id.home -> {
                 onBackPressed()
                 true
@@ -50,7 +51,7 @@ class FeatureFlagHandlerActivity : AppCompatActivity(), FeatureFlagActivityContr
             override fun onQueryTextSubmit(query: String?) = false
 
             override fun onQueryTextChange(newText: String?): Boolean {
-                presenter.filterFeatureFlagsByName(newText ?: EMPTY)
+                viewModel.filterFeatureFlagsByName(newText ?: EMPTY)
                 return false
             }
         })
@@ -66,15 +67,10 @@ class FeatureFlagHandlerActivity : AppCompatActivity(), FeatureFlagActivityContr
             ).inject(this)
     }
 
-    override fun onDestroy() {
-        presenter.unBind()
-        super.onDestroy()
-    }
-
-    override fun setup() {
+    private fun setup() {
         with(binding.rvFlags) {
             layoutManager = LinearLayoutManager(context)
-            adapter = FeatureFlagAdapter(presenter)
+            adapter = FeatureFlagAdapter(viewModel)
             addItemDecoration(
                 DividerItemDecoration(
                     context,
@@ -82,11 +78,6 @@ class FeatureFlagHandlerActivity : AppCompatActivity(), FeatureFlagActivityContr
                 )
             )
         }
-    }
-
-    override fun showReatureFlagValues(featureFlagValues: List<FeatureFlagValue>) {
-        binding.getFeatureFlagAdapter()
-            .submitList(featureFlagValues, shouldSaveListToBeFiltered = true)
     }
 
     private fun ActivityFeatureFlagHandlerBinding.getFeatureFlagAdapter(): FeatureFlagAdapter {

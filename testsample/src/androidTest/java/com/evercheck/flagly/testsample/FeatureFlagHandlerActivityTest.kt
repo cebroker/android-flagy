@@ -1,16 +1,11 @@
 package com.evercheck.flagly.testsample
 
-import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.intent.rule.IntentsTestRule
-import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.runner.AndroidJUnit4
 import com.evercheck.flagly.developeroptions.FeatureFlagHandlerActivity
-
+import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-
-import org.junit.Assert.*
-import org.junit.Rule
 
 @RunWith(AndroidJUnit4::class)
 class FeatureFlagHandlerActivityTest {
@@ -20,22 +15,22 @@ class FeatureFlagHandlerActivityTest {
         IntentsTestRule(FeatureFlagHandlerActivity::class.java, true, true)
 
     @Test
-    fun given_and_app_with_four_feature_flags_the_one_and_three_ON_when_view_is_shown_it_should_match() {
+    fun given_and_app_with_four_feature_flags_the_one_and_two_ON_when_view_is_shown_it_should_match() {
         areFeatureFlagsDisplayed()
         areRemoteValuesDisplayedCorrectly()
     }
 
     @Test
     fun given_a_value_is_not_overriden_when_click_on_switch_then_nothign_should_happen() {
-        clickOnViewWithId(R.id.switchFeatureFlag)
-        isViewNotChecked(R.id.switchFeatureFlag)
+        clickOnViewWithId(R.id.switchFeatureFlag, THIRD_FEATURE_FLAG_INDEX)
+        isViewNotChecked(R.id.switchFeatureFlag, THIRD_FEATURE_FLAG_INDEX)
     }
 
     @Test
     fun given_a_value_is_overriden_when_click_on_switch_that_is_off_then_value_should_change() {
-        clickOnViewWithWithText(OVERRIDE_TEXT,THIRD_FEATURE_FLAG_INDEX)
-        clickOnViewWithId(R.id.switchFeatureFlag,THIRD_FEATURE_FLAG_INDEX)
-        isViewCheck(R.id.switchFeatureFlag,THIRD_FEATURE_FLAG_INDEX)
+        clickOnViewWithWithText(OVERRIDE_TEXT, THIRD_FEATURE_FLAG_INDEX)
+        clickOnViewWithId(R.id.switchFeatureFlag, THIRD_FEATURE_FLAG_INDEX)
+        isViewCheck(R.id.switchFeatureFlag, THIRD_FEATURE_FLAG_INDEX)
     }
 
 

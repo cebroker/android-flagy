@@ -2,14 +2,10 @@ package com.evercheck.flagly.developeroptions.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.Filter
-import android.widget.Filterable
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import com.evercheck.flagly.databinding.ItemFeatureFlagBinding
 import com.evercheck.flagly.developeroptions.FeatureFlagValue
-import java.util.*
-import kotlin.collections.ArrayList
 
 class FeatureFlagAdapter(
     private val featureFlagValueChangedListener: FeatureFlagValueChangedListener
@@ -23,8 +19,8 @@ class FeatureFlagAdapter(
         newItem == oldItem
 }) {
 
-    private var originalList = ArrayList<FeatureFlagValue>()
-    private var temporalList = ArrayList<FeatureFlagValue>()
+    private var originalList: List<FeatureFlagValue> = arrayListOf()
+    private var temporalList: List<FeatureFlagValue> = arrayListOf()
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
@@ -41,7 +37,7 @@ class FeatureFlagAdapter(
 
     fun submitList(list: List<FeatureFlagValue>?, shouldSaveListToBeFiltered: Boolean) {
         if (shouldSaveListToBeFiltered) {
-            originalList = list as ArrayList<FeatureFlagValue>
+            originalList = list as List<FeatureFlagValue>
         }
         super.submitList(list)
     }

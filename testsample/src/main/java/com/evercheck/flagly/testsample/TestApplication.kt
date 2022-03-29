@@ -2,10 +2,10 @@ package com.evercheck.flagly.testsample
 
 import android.app.Application
 import com.evercheck.flagly.developeroptions.FeatureHandleResourceProvider
-import com.evercheck.flagly.featureflag.DynamicFeatureFlagHandler
-import com.evercheck.flagly.featureflag.FeatureFlag
-import com.evercheck.flagly.featureflag.FeatureFlagHandler
-import com.evercheck.flagly.featureflag.FeatureFlagProvider
+import com.evercheck.flagly.data.DynamicFeatureFlagHandler
+import com.evercheck.flagly.domain.model.FeatureFlag
+import com.evercheck.flagly.data.FeatureFlagHandler
+import com.evercheck.flagly.data.FeatureFlagProvider
 
 class TestApplication : Application(), FeatureHandleResourceProvider {
 
@@ -43,7 +43,7 @@ class TestApplication : Application(), FeatureHandleResourceProvider {
 
     override fun getRemoteFeatureFlagHandler(): FeatureFlagHandler = object : FeatureFlagHandler {
         override fun isFeatureEnabled(featureFlag: FeatureFlag): Boolean {
-            return featureFlag is FeatureFlagOne || featureFlag is FeatureFlagThree || featureFlag is FeatureFlagFive
+            return featureFlag is FeatureFlagOne ||  featureFlag is FeatureFlagTwo
         }
     }
 

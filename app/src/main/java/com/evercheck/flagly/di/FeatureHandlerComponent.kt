@@ -3,9 +3,9 @@ package com.evercheck.flagly.di
 import dagger.BindsInstance
 import dagger.Component
 import com.evercheck.flagly.developeroptions.FeatureFlagHandlerActivity
-import com.evercheck.flagly.featureflag.DynamicFeatureFlagHandler
-import com.evercheck.flagly.featureflag.FeatureFlagHandler
-import com.evercheck.flagly.featureflag.FeatureFlagProvider
+import com.evercheck.flagly.data.DynamicFeatureFlagHandler
+import com.evercheck.flagly.data.FeatureFlagHandler
+import com.evercheck.flagly.data.FeatureFlagProvider
 import javax.inject.Singleton
 
 @Singleton
