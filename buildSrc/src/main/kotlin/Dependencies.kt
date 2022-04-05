@@ -8,6 +8,7 @@ private const val LIFECYCLE_VIEWMODEL_VERSION = "2.4.0"
 private const val MOCKK_VERSION = "1.12.3"
 private const val KOTLINX_COROUTINES_TEST_VERSION = "1.6.0"
 private const val CORE_TESTING_VERSION = "2.1.0"
+private const val TEST_JUNIT_VERSION = "1.1.3"
 
 object Dependencies {
 
@@ -38,6 +39,8 @@ object Dependencies {
     const val ESPRESSO_INTENTS = "androidx.test.espresso:espresso-intents:$ESPRESSO_VERSION"
 
     const val TEST_RUNNER = "androidx.test:runner:$TEST_RUNNER_VERSION"
+
+    const val TEST_JUNIT_KTX = "androidx.test.ext:junit-ktx:$TEST_JUNIT_VERSION"
 
     const val MOCKK = "io.mockk:mockk:$MOCKK_VERSION"
     const val KOTLINX_COROUTINES_TEST =

@@ -49,7 +49,7 @@ dependencies {
     implementation(Dependencies.ESPRESSO_INTENTS)
     implementation(Dependencies.ESPRESSO_CORE)
     implementation(Dependencies.TEST_RUNNER)
-    implementation("androidx.test.ext:junit-ktx:1.1.3")
+    implementation(Dependencies.TEST_JUNIT_KTX)
 
     androidTestImplementation(Dependencies.ESPRESSO_CONTRIB)
     androidTestImplementation(Dependencies.ESPRESSO_INTENTS)
