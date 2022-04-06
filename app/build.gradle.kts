@@ -7,7 +7,7 @@ plugins {
     id("kotlin-android-extensions")
     id("kotlin-kapt")
     id("com.jfrog.bintray")
-    id("com.github.dcendents.android-maven")
+    id("maven-publish")
 }
 
 apply {
@@ -15,14 +15,12 @@ apply {
 }
 
 android {
-    compileSdkVersion(AndroidConstants.COMPILE_SDK_VERSION)
-    buildToolsVersion(AndroidConstants.BUILD_TOOLS_VERSION)
+    compileSdk = AndroidConstants.COMPILE_SDK_VERSION
+    buildToolsVersion = AndroidConstants.BUILD_TOOLS_VERSION
 
     defaultConfig {
-        minSdkVersion(AndroidConstants.MIN_SDK_VERSION)
-        targetSdkVersion(AndroidConstants.TARGET_SDK_VERSION)
-        versionCode = 1
-        versionName = "1.0"
+        minSdk = AndroidConstants.MIN_SDK_VERSION
+        targetSdk = AndroidConstants.TARGET_SDK_VERSION
     }
 
     buildTypes {

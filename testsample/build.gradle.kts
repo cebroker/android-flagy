@@ -6,13 +6,12 @@ plugins {
 }
 
 android {
-    compileSdkVersion(30)
-    buildToolsVersion("30.0.0")
+    compileSdk = 31
 
     defaultConfig {
         applicationId = "com.evercheck.flagly.testsample"
-        minSdkVersion(AndroidConstants.MIN_SDK_VERSION)
-        targetSdkVersion(AndroidConstants.TARGET_SDK_VERSION)
+        minSdk =AndroidConstants.MIN_SDK_VERSION
+        targetSdk = AndroidConstants.TARGET_SDK_VERSION
         versionCode = 1
         versionName = "1.0"
 
@@ -50,6 +49,7 @@ dependencies {
     implementation(Dependencies.ESPRESSO_INTENTS)
     implementation(Dependencies.ESPRESSO_CORE)
     implementation(Dependencies.TEST_RUNNER)
+    implementation(Dependencies.TEST_JUNIT_KTX)
 
     androidTestImplementation(Dependencies.ESPRESSO_CONTRIB)
     androidTestImplementation(Dependencies.ESPRESSO_INTENTS)
