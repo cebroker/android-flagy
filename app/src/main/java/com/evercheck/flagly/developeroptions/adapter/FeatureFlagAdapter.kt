@@ -20,7 +20,6 @@ class FeatureFlagAdapter(
 }) {
 
     private var originalList: List<FeatureFlagValue> = arrayListOf()
-    private var temporalList: List<FeatureFlagValue> = arrayListOf()
 
     override fun onCreateViewHolder(
         parent: ViewGroup,

@@ -1,15 +1,12 @@
 package com.evercheck.flagly.developeroptions.adapter
 
-import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import com.evercheck.flagly.databinding.ItemFeatureFlagBinding
-import kotlinx.android.extensions.LayoutContainer
 import com.evercheck.flagly.developeroptions.FeatureFlagValue
 
 class FeatureFlagHandlerViewHolder(private val binding: ItemFeatureFlagBinding) :
-    RecyclerView.ViewHolder(binding.root), LayoutContainer {
+    RecyclerView.ViewHolder(binding.root) {
 
-    override val containerView: View = binding.root
 
     fun bind(
         featureFlagValue: FeatureFlagValue,
@@ -20,7 +17,8 @@ class FeatureFlagHandlerViewHolder(private val binding: ItemFeatureFlagBinding) 
             cbOverride.setOnCheckedChangeListener(null)
             cbOverride.isChecked = featureFlagValue.isOverride
             switchFeatureFlag.isEnabled = featureFlagValue.isOverride
-            switchFeatureFlag.isChecked = if (featureFlagValue.isOverride) featureFlagValue.currentValue else featureFlagValue.remoteValue
+            switchFeatureFlag.isChecked =
+                if (featureFlagValue.isOverride) featureFlagValue.currentValue else featureFlagValue.remoteValue
             tvFeatureFlagName.text = featureFlagValue.featureFlag.name
             tvFeatureRemoteValue.text = featureFlagValue.remoteValue.toString()
 
