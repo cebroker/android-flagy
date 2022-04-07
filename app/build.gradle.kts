@@ -4,7 +4,6 @@ import java.io.FileInputStream
 plugins {
     id("com.android.library")
     id("kotlin-android")
-    id("kotlin-android-extensions")
     id("kotlin-kapt")
     id("com.jfrog.bintray")
     id("maven-publish")
@@ -16,7 +15,6 @@ apply {
 
 android {
     compileSdk = AndroidConstants.COMPILE_SDK_VERSION
-    buildToolsVersion = AndroidConstants.BUILD_TOOLS_VERSION
 
     defaultConfig {
         minSdk = AndroidConstants.MIN_SDK_VERSION

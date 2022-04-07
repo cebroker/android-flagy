@@ -1,6 +1,6 @@
 private const val COROUTINES_VERSION = "1.6.0"
 private const val DAGGER_VERSION = "2.37"
-private const val KOTLIN_VERSION = "1.6.20"
+private const val KOTLIN_VERSION = "1.6.10"
 private const val ANDROID_X_CORE_VERSION = "1.6.0"
 private const val ESPRESSO_VERSION = "3.2.0"
 private const val TEST_RUNNER_VERSION = "1.2.0"
